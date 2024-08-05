@@ -14,12 +14,7 @@ from models.review import Review
 from models.state import State
 
 class HBNBCommand(cmd.Cmd):
-    """
-        Defining a command interpreter.
-        Attributes:
-            prompt (str): command prompt.
-    """
-
+    """Hbnb command class"""
 
     prompt = "(hbnb) "
 
