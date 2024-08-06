@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 """ Importing models file_storage to use -> storage"""
-import os
+from os import getenv
 
 
-type_storage = os.getenv('HBNB_TYPE_STORAGE')
+type_storage = getenv('HBNB_TYPE_STORAGE')
 
 
-if type_storage == "db":
+if type_storage == 'db':
     from models.engine.db_storage import DBStorage
     storage = DBStorage()
 else:

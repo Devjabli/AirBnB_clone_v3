@@ -25,19 +25,17 @@ class DBStorage:
 
     def __init__(self):
         """Initializing the storage engine."""
-        HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
-        HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
-        HBNB_MYSQL_HOST = getenv('HBNB_MYSQL_HOST')
-        HBNB_MYSQL_DB = getenv('HBNB_MYSQL_DB')
-        HBNB_ENV = getenv('HBNB_ENV')
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.format(
-                HBNB_MYSQL_USER,
-                HBNB_MYSQL_PWD,
-                HBNB_MYSQL_HOST,
-                HBNB_MYSQL_DB))
+                getenv("HBNB_MYSQL_USER"),
+                getenv("HBNB_MYSQL_PWD"),
+                getenv("HBNB_MYSQL_HOST"),
+                getenv("HBNB_MYSQL_DB")
+            ),
+            pool_pre_ping=True
+        )
 
-        if HBNB_ENV == "test":
+        if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
@@ -87,19 +85,3 @@ class DBStorage:
     def close(self):
         """Close the current session."""
         self.__session.close()
-    
-    def get(self, cls, id):
-        """ Retrieving data """
-        if cls in self.class_map.values() and id and type(id) == str:
-            dic_obj = self.all(cls)
-            for k, v in dic_obj.items():
-                if k.split(".")[1] == id:
-                    return v
-        return None
-    
-    def count(self, cls=None):
-        """ counters """
-        data = self.all(cls)
-        if cls in self.class_map.value():
-            data = self.all(cls)
-        return len(data)
