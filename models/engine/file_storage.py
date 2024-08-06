@@ -109,17 +109,12 @@ class FileStorage:
             pass
     
     def get(self, cls, id):
-        """ Retrieving data """
-        if cls in self.class_map.values() and id and type(id) == str:
-            dic_obj = self.all(cls)
-            for k, v in dic_obj.items():
-                if k.split(".")[1] == id:
-                    return v
+        """Retrieve one object based on the class and its ID."""
+        if cls and id:
+            key = "{}.{}".format(cls.__name__, id)
+            return self.all(cls).get(key, None)
         return None
-    
+
     def count(self, cls=None):
-        """ counters """
-        data = self.all(cls)
-        if cls in self.class_map.value():
-            data = self.all(cls)
-        return len(data)
+        """Count the number of objects in storage matching the given class."""
+        return len(self.all(cls))
